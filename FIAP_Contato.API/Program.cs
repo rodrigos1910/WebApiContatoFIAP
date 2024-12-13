@@ -3,7 +3,7 @@ using FIAP_Contato.CrossCutting;
 using FIAP_Contato.CrossCutting.Logger;
 
 using Microsoft.OpenApi.Models;
-using MySqlConnector;
+
 using Prometheus;
 using System.Data;
 using System.Reflection;
@@ -29,10 +29,6 @@ builder.Services.AddSwaggerGen(s => {
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
-
-//Configuração para buscar a connection
-var connectionString = configuration.GetValue<string>("ConnectionString");
-builder.Services.AddScoped<IDbConnection>((connection) => new MySqlConnection(connectionString));
 
 // Configuration IoC
 builder.Services.AddRegisterServices();

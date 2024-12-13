@@ -6,12 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FIAP_Contato.Domain\FIAP_Contato.Domain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+     <ProjectReference Include="..\Fiap_Contato.Producer\Fiap_Contato.Producer.csproj" />
+    </ItemGroup>
 
 </Project>

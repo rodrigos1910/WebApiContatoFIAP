@@ -1,45 +1,43 @@
-﻿using AutoMapper;
+﻿ 
+using Fiap_Contato.Producer.Interface;
+
 using FIAP_Contato.Application.Interface;
-using FIAP_Contato.Application.Model;
-using FIAP_Contato.Domain.Entity;
-using FIAP_Contato.Domain.Interface;
+using FIAP_Contato.Application.Model; 
+using System.Threading.Tasks;
 
 namespace FIAP_Contato.Application.Service;
 
 public class ContatoApplicationService : IContatoApplicationService
 {
-    private readonly IContatoDomainService _contatoDomainService;
-    private IMapper _mapper;
+   
+    private readonly IContatoProducer _producer;
 
-    public ContatoApplicationService(IContatoDomainService contatoDomainService, IMapper mapper)
+    public ContatoApplicationService(IContatoProducer producer)
     {
-        _contatoDomainService = contatoDomainService;
-        _mapper = mapper;
-    }
-    
-    public async Task<string> AtualizarContato(int id, ContatoModel request)
-    {
-        var req = _mapper.Map<Contato>(request);
-        req.Id = id;
-
-        return await _contatoDomainService.AtualizarContato(req);
+     
+        _producer = producer;
     }
 
-    public async Task<string> CadastrarContato(ContatoModel request)
+    public async Task AtualizarContato(int id, ContatoModel request)
     {
-        var req = _mapper.Map<Contato>(request);
-        return await _contatoDomainService.CadastrarContato(req);
+        var contatoAtualizao = new ContatoAtualizacaoModel(id, request);
+
+        // Envia para a fila de atualização
+        await _producer.EnviarMensagemAsync(contatoAtualizao, "fila_atualizacao");
+
     }
 
-    public async Task<string> DeletarContato(int id)
+    public async Task CadastrarContato(ContatoModel request)
     {
-        return await _contatoDomainService.DeletarContato(id);
+          // Envia para a fila de cadastro
+        await _producer.EnviarMensagemAsync(request, "fila_cadastro");
+         
     }
 
-    public async Task<IEnumerable<ContatoModelResponse>> ObterTodosContatos(string? ddd)
+    public async Task DeletarContato(int id)
     {
-        var res = await _contatoDomainService.ObterTodosContatos(ddd);
-
-        return _mapper.Map<IEnumerable<ContatoModelResponse>>(res);
+        // Envia o ID para a fila de exclusão
+        await  _producer.EnviarMensagemAsync(id, "fila_exclusao");
+         
     }
 }

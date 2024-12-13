@@ -82,6 +82,19 @@ services:
     networks:
       - default
 
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" # Porta para comunicação entre serviços
+      - "15672:15672" # Porta para acessar o painel do RabbitMQ
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    restart: always
+    networks:
+      - default
+
 networks:
   default:
     driver: bridge

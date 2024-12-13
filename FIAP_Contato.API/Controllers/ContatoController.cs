@@ -23,8 +23,8 @@ public class ContatoController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CadastrarContato(ContatoModel request)
     {
-        var response = await _contatoApplicationService.CadastrarContato(request);
-        return Ok(response);
+         await _contatoApplicationService.CadastrarContato(request);
+        return Ok("Contato enviado para processamento.");
     }
 
     /// <summary>
@@ -39,25 +39,8 @@ public class ContatoController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> AtualizarContato(int id, ContatoModel request)
     {
-        var response = await _contatoApplicationService.AtualizarContato(id, request);
-        return Ok(response);
-    }
-
-    /// <summary>
-    /// Buscar todos contatos ou por DDD
-    /// </summary>
-    /// <param name="request">Informação do contato</param>
-    /// <returns></returns>
-    /// <response code="204">Solicitação executada com sucesso</response>
-    /// <response code="400">Falha ao processar requisição</response>
-    /// <response code="404">Contato não encontrado</response>
-    /// <response code="500">Erro do Servidor</response>
-    [HttpGet]
-    public async Task<IActionResult> ObterTodosContatos(string? ddd)
-    {
-        var response = await _contatoApplicationService.ObterTodosContatos(ddd);
-
-        return response.Any() ? Ok(response) : NotFound();
+          await _contatoApplicationService.AtualizarContato(id, request);
+        return Ok("Atualização enviada para processamento.");
     }
 
     /// <summary>
@@ -70,7 +53,7 @@ public class ContatoController : ControllerBase
     [HttpDelete("id")]
     public async Task<IActionResult> DeletarContato(int id)
     {
-        var response = await _contatoApplicationService.DeletarContato(id);
-        return Ok(response);
+         await _contatoApplicationService.DeletarContato(id);
+        return Ok("Exclusão enviada para processamento.");
     }
 }
